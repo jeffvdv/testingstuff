@@ -57,6 +57,7 @@ services:
       - "traefik.http.routers.front-ssl.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.front-ssl.tls=true"
       - "traefik.http.routers.front-ssl.service=front"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://play.jeffreyvandevelde.be,https://pusher.jeffreyvandevelde.be,https://api.jeffreyvandevelde.be,https://uploader.jeffreyvandevelde.be,https://maps.jeffreyvandevelde.be"
 
   pusher:
     image: thecodingmachine/nodejs:12
@@ -86,6 +87,7 @@ services:
       - "traefik.http.routers.pusher-ssl.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.pusher-ssl.tls=true"
       - "traefik.http.routers.pusher-ssl.service=pusher"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://play.jeffreyvandevelde.be,https://pusher.jeffreyvandevelde.be,https://api.jeffreyvandevelde.be,https://uploader.jeffreyvandevelde.be,https://maps.jeffreyvandevelde.be"
 
   maps:
     image: thecodingmachine/nodejs:12-apache
@@ -113,6 +115,7 @@ services:
       - "traefik.http.routers.maps-ssl.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.maps-ssl.tls=true"
       - "traefik.http.routers.maps-ssl.service=maps"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://play.jeffreyvandevelde.be,https://pusher.jeffreyvandevelde.be,https://api.jeffreyvandevelde.be,https://uploader.jeffreyvandevelde.be,https://maps.jeffreyvandevelde.be"
 
   back:
     image: thecodingmachine/nodejs:12
@@ -141,6 +144,7 @@ services:
       - "traefik.http.routers.back-ssl.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.back-ssl.tls=true"
       - "traefik.http.routers.back-ssl.service=back"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://play.jeffreyvandevelde.be,https://pusher.jeffreyvandevelde.be,https://api.jeffreyvandevelde.be,https://uploader.jeffreyvandevelde.be,https://maps.jeffreyvandevelde.be"
 
   uploader:
     image: thecodingmachine/nodejs:12
@@ -163,6 +167,7 @@ services:
       - "traefik.http.routers.uploader-ssl.tls.certresolver=myhttpchallenge"
       - "traefik.http.routers.uploader-ssl.tls=true"
       - "traefik.http.routers.uploader-ssl.service=uploader"
+      - "traefik.http.middlewares.testheader.headers.accesscontrolalloworiginlist=https://play.jeffreyvandevelde.be,https://pusher.jeffreyvandevelde.be,https://api.jeffreyvandevelde.be,https://uploader.jeffreyvandevelde.be,https://maps.jeffreyvandevelde.be"
 
   messages:
     #image: thecodingmachine/nodejs:14
