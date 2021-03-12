@@ -1,0 +1,10 @@
+.env
+.idea
+.vagrant
+Vagrantfile
+docker-compose.override.yaml
+*.DS_Store
+maps/yarn.lock
+maps/dist/computer.js
+maps/dist/computer.js.map
+terraform/*

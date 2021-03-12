@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ShowpadAdventure Status</title>
+
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+        <style>
+            .nb-spinner {
+                width: 20px;
+                height: 20px;
+                margin: 0;
+                background: transparent;
+                border-top: 2px solid #6366f1;
+                border-right: 2px solid transparent;
+                border-radius: 50%;
+                animation: 1s spin linear infinite;
+            }
+            @keyframes spin {
+                from {
+                    -webkit-transform: rotate(0deg);
+                    transform: rotate(0deg);
+                }
+                to {
+                    -webkit-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="min-h-screen bg-white">
+            <nav class="bg-white border-b border-gray-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <div class="flex-shrink-0 flex items-center">
+                                <a href="https://play.jeffreyvandevelde.be">
+                                    <img
+                                        class="block h-8 w-auto"
+                                        src="/resources/logos/logo.png"
+                                        alt="ShowpadAdventure logo"
+                                /></a>
+                            </div>
+                            <div class="sm:-my-px sm:ml-6 sm:flex">
+                                <a
+                                    href="#"
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out"
+                                >
+                                    Status
+                                </a>
+                            </div>
+                            <div class="sm:-my-px sm:ml-6 sm:flex">
+                                <a
+                                    href="https://app.datadoghq.com/dashboard/rze-hki-h74"
+                                    target="_blank"
+                                    class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out"
+                                >
+                                    Datadog
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="py-10">
+                <header>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+                        <h1 class="text-3xl font-bold leading-tight text-gray-900 mr-4">Status</h1>
+                        <div class="nb-spinner"></div>
+                    </div>
+                </header>
+                <main>
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="px-4 py-8 sm:px-0">
+                            <div class="border-4 border-gray-200 rounded-lg p-8">
+                                <div id="app"></div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+        <script src="//unpkg.com/react@16/umd/react.development.js"></script>
+        <script src="//unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/deepdash/browser/deepdash.standalone.min.js"></script>
+        <script type="text/babel">
+            function Status() {
+                const [loading, setLoading] = React.useState(true);
+                const [users, setUsers] = React.useState([]);
+
+                React.useEffect(() => {
+                    // Initial load
+                    fetchUsers().then((users) => {
+                        setUsers(users);
+                        setLoading(false);
+                    });
+
+                    // Polling mode
+                    setInterval(async function () {
+                        fetchUsers().then((users) => setUsers(users));
+                    }, 2000);
+                }, []);
+
+                return (
+                    <div>
+                        {loading && <p>Loading...</p>}
+                        {!loading && users.length === 0 && <p>No users playing at the moment...</p>}
+                        {!loading && users.length > 0 && (
+                            <div className="flex flex-col">
+                                <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+                                    <div className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                                        <table className="min-w-full">
+                                            <thead>
+                                                <tr>
+                                                    <th className="w-96 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        Id
+                                                    </th>
+                                                    <th className="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        Name
+                                                    </th>
+                                                    <th className="w-16 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        IP Address
+                                                    </th>
+                                                    <th className="w-16 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        Character
+                                                    </th>
+                                                    <th className="w-48 px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                                        Room
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {users.map((user) => (
+                                                    <tr className="bg-white" key={user.id}>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                            {user.id}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                            {user.name}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                            {user.ip}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                            {user.character}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                            {user.room}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                );
+            }
+
+            async function fetchUsers() {
+                const response = await fetch("https://pusher.jeffreyvandevelde.be/dump");
+                const worlds = await response.json();
+                if (worlds.length === 0) {
+                    return;
+                }
+
+                // The "dump" endpoint is so bloated that we have to do a full-scan for the users...
+                const users = [];
+                deepdash.eachDeep(worlds, function (value, key, path, depth, parent) {
+                    if (key == "userUuid") {
+                        users.push({
+                            id: path.userUuid,
+                            name: path.name,
+                            ip: path.IPAddress,
+                            character: Object.values(path.characterLayers)
+                                .map((layer) => layer.name)
+                                .join(","),
+                            position: path.position,
+                            room: path.roomId.split("/").slice(-2).join(" - ").replace(".json", ""),
+                        });
+                    }
+                });
+
+                return users;
+            }
+
+            ReactDOM.render(<Status />, document.getElementById("app"));
+        </script>
+    </body>
+</html>
